@@ -19,7 +19,7 @@ class SmsReceiver : BroadcastReceiver() {
 
     private fun getSmsInfo(extras: Bundle?): SmsInfo {
         val pdus = extras?.get("pdus") as Array<*>
-        val format = extras?.getString("format")
+        val format = extras.getString("format")
 
         var smsText = ""
         var senderNumber = ""

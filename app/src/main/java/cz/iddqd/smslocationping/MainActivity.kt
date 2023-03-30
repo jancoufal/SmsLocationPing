@@ -39,7 +39,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val requiredPermissions = listOf(
             Manifest.permission.RECEIVE_SMS,
             Manifest.permission.READ_SMS,
-            Manifest.permission.SEND_SMS
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
         )
 
         if (missingAnyPermission(requiredPermissions))
