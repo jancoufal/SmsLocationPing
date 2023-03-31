@@ -1,9 +1,12 @@
 package cz.iddqd.smslocationping
 
 import android.Manifest
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Telephony
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -21,6 +24,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 		findViewById<Button>(R.id.btnSvcTurnOn).setOnClickListener(this::onClick)
 		findViewById<Button>(R.id.btnSvcTurnOff).setOnClickListener(this::onClick)
 		findViewById<Button>(R.id.btnDebug).setOnClickListener(this::onDebugClick)
+
+		val smsReceiver = SmsReceiver("hello")
+
+		registerReceiver(smsReceiver, IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION))
 	}
 
 	override fun onClick(v: View?) {
