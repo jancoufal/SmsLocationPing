@@ -1,12 +1,18 @@
 package cz.iddqd.smslocationping
 
 import android.annotation.SuppressLint
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.provider.Telephony
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 
 class SmsReceiver : BroadcastReceiver() {
 
@@ -16,7 +22,7 @@ class SmsReceiver : BroadcastReceiver() {
 
 		try {
 			when (intent?.action) {
-				Telephony.Sms.Intents.SMS_RECEIVED_ACTION -> onSmsReceived(context, intent)
+				Telephony.Sms.Intents.SMS_RECEIVED_ACTION -> context?.let { onSmsReceived(context, intent) }
 			}
 		}
 		catch (e: Exception) {
@@ -25,9 +31,41 @@ class SmsReceiver : BroadcastReceiver() {
 		}
 	}
 
-	private fun onSmsReceived(context: Context?, intent: Intent?) {
+	private fun onSmsReceived(context: Context, intent: Intent?) {
 		val smsInfo = intent?.extras?.let { SmsInfo.createFromBundle(it) }
 
 		Toast.makeText(context, "SmsReceiver: $smsInfo", Toast.LENGTH_LONG).show()
+		showNotification(context, intent, smsInfo)
+	}
+
+	private fun showNotification(context: Context, intent: Intent?, smsInfo: SmsInfo?) {
+		val contentIntent = PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
+
+		val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+		val notificationBuilder = NotificationCompat.Builder(context, "default")
+			.setSmallIcon(R.drawable.ic_launcher_foreground)
+			.setVisibility(NotificationCompat.VISIBILITY_SECRET)
+			.setContentTitle("New Location Ping")
+			.setContentText("${smsInfo?.senderNumber ?: "(unknown)"} sends a location")
+			.setContentIntent(contentIntent)
+			.setDefaults(Notification.DEFAULT_ALL)
+			.setAutoCancel(true)
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			val NOTIFICATION_CHANNEL_ID = "10001"
+
+			val notificationChannel = NotificationChannel(
+				NOTIFICATION_CHANNEL_ID,
+				"NOTIFICATION_CHANNEL_NAME",
+				NotificationManager.IMPORTANCE_HIGH
+			)
+
+			notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID)
+
+			notificationManager.createNotificationChannel(notificationChannel)
+		}
+
+		notificationManager.notify(1, notificationBuilder.build())
 	}
 }

@@ -38,6 +38,11 @@ class MainActivity : AppCompatActivity() {
 		Log.d("EVENT", "onRestart")
 	}
 
+	override fun onDestroy() {
+		super.onDestroy()
+		Log.d("EVENT", "onDestroy")
+	}
+
 	private fun onClick(v: View?) {
 		Log.d("EVENT", "$v")
 	}
