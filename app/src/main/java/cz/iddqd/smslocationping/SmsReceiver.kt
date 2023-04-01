@@ -8,11 +8,11 @@ import android.provider.Telephony
 import android.util.Log
 import android.widget.Toast
 
-class SmsReceiver(private var tag: String) : BroadcastReceiver() {
+class SmsReceiver : BroadcastReceiver() {
 
 	@SuppressLint("UnsafeProtectedBroadcastReceiver")
 	override fun onReceive(context: Context?, intent: Intent?) {
-		Log.d("BROADCAST", "tag: $tag, context: $context, intent: $intent")
+		Log.d("BROADCAST", "context: $context, intent: $intent")
 
 		try {
 			when (intent?.action) {
@@ -25,8 +25,7 @@ class SmsReceiver(private var tag: String) : BroadcastReceiver() {
 		}
 	}
 
-	private fun onSmsReceived(context: Context?, intent: Intent?)
-	{
+	private fun onSmsReceived(context: Context?, intent: Intent?) {
 		val smsInfo = intent?.extras?.let { SmsInfo.createFromBundle(it) }
 
 		Toast.makeText(context, "SmsReceiver: $smsInfo", Toast.LENGTH_LONG).show()

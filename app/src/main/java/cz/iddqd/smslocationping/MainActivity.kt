@@ -1,19 +1,16 @@
 package cz.iddqd.smslocationping
 
 import android.Manifest
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Telephony
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
@@ -24,13 +21,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 		findViewById<Button>(R.id.btnSvcTurnOn).setOnClickListener(this::onClick)
 		findViewById<Button>(R.id.btnSvcTurnOff).setOnClickListener(this::onClick)
 		findViewById<Button>(R.id.btnDebug).setOnClickListener(this::onDebugClick)
-
-		val smsReceiver = SmsReceiver("hello")
-
-		registerReceiver(smsReceiver, IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION))
 	}
 
-	override fun onClick(v: View?) {
+	override fun onPause() {
+		super.onPause()
+		Log.d("EVENT", "onPause")
+	}
+
+	override fun onResume() {
+		super.onResume()
+		Log.d("EVENT", "onResume")
+	}
+
+	override fun onRestart() {
+		super.onRestart()
+		Log.d("EVENT", "onRestart")
+	}
+
+	private fun onClick(v: View?) {
 		Log.d("EVENT", "$v")
 	}
 
