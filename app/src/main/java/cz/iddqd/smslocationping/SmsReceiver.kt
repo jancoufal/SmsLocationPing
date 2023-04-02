@@ -35,10 +35,10 @@ class SmsReceiver : BroadcastReceiver() {
 		val smsInfo = intent?.extras?.let { SmsInfo.createFromBundle(it) }
 
 		Toast.makeText(context, "SmsReceiver: $smsInfo", Toast.LENGTH_LONG).show()
-		showNotification(context, intent, smsInfo)
+		showNotification(context, smsInfo)
 	}
 
-	private fun showNotification(context: Context, intent: Intent?, smsInfo: SmsInfo?) {
+	private fun showNotification(context: Context, smsInfo: SmsInfo?) {
 		val contentIntent = PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
 
 		val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -53,15 +53,15 @@ class SmsReceiver : BroadcastReceiver() {
 			.setAutoCancel(true)
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			val NOTIFICATION_CHANNEL_ID = "10001"
+			val notificationChannelId = "10001"
 
 			val notificationChannel = NotificationChannel(
-				NOTIFICATION_CHANNEL_ID,
+				notificationChannelId,
 				"NOTIFICATION_CHANNEL_NAME",
 				NotificationManager.IMPORTANCE_HIGH
 			)
 
-			notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID)
+			notificationBuilder.setChannelId(notificationChannelId)
 
 			notificationManager.createNotificationChannel(notificationChannel)
 		}
