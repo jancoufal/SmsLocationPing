@@ -31,7 +31,7 @@
 		</activity>
 
 		<receiver
-			android:name=".SmsReceiver"
+			android:name=".SmsPingStaticBroadcastReceiver"
 			android:exported="true"
 			android:permission="android.permission.BROADCAST_SMS">
 			<intent-filter>

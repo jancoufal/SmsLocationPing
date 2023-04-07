@@ -14,7 +14,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 
-class SmsReceiver : BroadcastReceiver() {
+class SmsPingStaticBroadcastReceiver : BroadcastReceiver() {
 
 	@SuppressLint("UnsafeProtectedBroadcastReceiver")
 	override fun onReceive(context: Context?, intent: Intent?) {
