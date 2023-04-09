@@ -9,12 +9,14 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import cz.iddqd.smslocationping.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+	private lateinit var binding : ActivityMainBinding
 
 	private val myNameIs = "I'm MainActivity"
 	private val intentFilter: IntentFilter = IntentFilter()
@@ -27,18 +29,19 @@ class MainActivity : AppCompatActivity() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_main)
+		binding = ActivityMainBinding.inflate(layoutInflater)
+		setContentView(binding.root)
 
 		Log.d("EVENT", "onCreate")
 
-		findViewById<Button>(R.id.btnSvcGetStatus).setOnClickListener(this::onSvcGetStatusClick)
-		findViewById<Button>(R.id.btnSvcTurnOn).setOnClickListener(this::onClick)
-		findViewById<Button>(R.id.btnSvcTurnOff).setOnClickListener(this::onClick)
-		findViewById<Button>(R.id.btnDebug).setOnClickListener(this::onDebugClick)
+		with(binding) {
+			btnSvcGetStatus.setOnClickListener(this@MainActivity::onSvcGetStatusClick)
+			btnSvcTurnOn.setOnClickListener(this@MainActivity::onClick)
+			btnSvcTurnOff.setOnClickListener(this@MainActivity::onClick)
+			btnDebug.setOnClickListener(this@MainActivity::onDebugClick)
+		}
 
 		bindBroadcastReceiver()
-
-
 	}
 
 	override fun onPause() {

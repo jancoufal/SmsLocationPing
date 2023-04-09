@@ -7,6 +7,10 @@ android {
     namespace 'cz.iddqd.smslocationping'
     compileSdk 33
 
+    buildFeatures {
+        viewBinding true
+    }
+
     defaultConfig {
         applicationId "cz.iddqd.smslocationping"
         minSdk 24
