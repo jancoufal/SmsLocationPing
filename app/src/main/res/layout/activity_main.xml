@@ -1,57 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnSvcGetStatus"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/button_bg_service_get_status"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/btnSvcGetStatus"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="16dp"
+		android:layout_marginTop="16dp"
+		android:layout_marginEnd="16dp"
+		android:text="@string/button_bg_service_get_status"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnSvcTurnOn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/button_bg_service_turn_on"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSvcGetStatus" />
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/btnSvcTurnOn"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="16dp"
+		android:layout_marginTop="16dp"
+		android:layout_marginEnd="16dp"
+		android:text="@string/button_bg_service_turn_on"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/btnSvcGetStatus" />
 
-    <Button
-        android:id="@+id/btnSvcTurnOff"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/button_bg_service_turn_off"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSvcTurnOn" />
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/btnSvcTurnOff"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="16dp"
+		android:layout_marginTop="16dp"
+		android:layout_marginEnd="16dp"
+		android:text="@string/button_bg_service_turn_off"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/btnSvcTurnOn" />
 
-    <Button
-        android:id="@+id/btnDebug"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/debug"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+	<androidx.appcompat.widget.AppCompatButton
+		android:id="@+id/btnSvcInfo1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="16dp"
+		android:layout_marginTop="16dp"
+		android:layout_marginEnd="16dp"
+		android:text="@string/button_bg_service_turn_off"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/btnSvcTurnOff"
+		/>
+
+	<androidx.appcompat.widget.LinearLayoutCompat
+		android:id="@+id/layoutLinearCompact1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="16dp"
+		android:layout_marginTop="16dp"
+		android:layout_marginEnd="16dp"
+		app:layout_constraintTop_toBottomOf="@+id/btnSvcInfo1"
+		>
+
+		<ImageView
+			android:id="@+id/iconLocationQuestionMark"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:padding="16dp"
+			android:scaleX="2"
+			android:scaleY="2"
+			android:importantForAccessibility="no"
+			app:srcCompat="@drawable/outline_not_listed_location_24" />
+
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/textField"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/testTextView"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="@+id/iconLocationQuestionMark">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				/>
+
+		</com.google.android.material.textfield.TextInputLayout>
+
+	</androidx.appcompat.widget.LinearLayoutCompat>
+
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="16dp"
+		android:layout_marginTop="16dp"
+		android:layout_marginEnd="16dp"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/layoutLinearCompact1"
+		>
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/recyclerView1"
+			android:layout_width="match_parent"
+			android:layout_height="220dp"
+			android:scrollbars="vertical"
+			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/layoutLinearCompact1"
+			app:layout_constraintBottom_toTopOf="@+id/btnDebug"
+			/>
+
+	</FrameLayout>
+
+
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/btnDebug"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="16dp"
+		android:layout_marginEnd="16dp"
+		android:layout_marginBottom="16dp"
+		android:text="@string/debug"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

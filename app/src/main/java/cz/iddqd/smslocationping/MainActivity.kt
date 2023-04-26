@@ -12,7 +12,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import cz.iddqd.smslocationping.adapter.ContactAdapter
 import cz.iddqd.smslocationping.databinding.ActivityMainBinding
+import cz.iddqd.smslocationping.model.DataSource
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,11 +36,17 @@ class MainActivity : AppCompatActivity() {
 
 		Log.d("EVENT", "onCreate")
 
+		val contactDataset = DataSource().loadContacts()
+
 		with(binding) {
 			btnSvcGetStatus.setOnClickListener(this@MainActivity::onSvcGetStatusClick)
 			btnSvcTurnOn.setOnClickListener(this@MainActivity::onClick)
 			btnSvcTurnOff.setOnClickListener(this@MainActivity::onClick)
 			btnDebug.setOnClickListener(this@MainActivity::onDebugClick)
+			with(recyclerView1) {
+				adapter = ContactAdapter(this@MainActivity, contactDataset)
+				setHasFixedSize(true)
+			}
 		}
 
 		bindBroadcastReceiver()
