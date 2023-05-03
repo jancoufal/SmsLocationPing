@@ -2,6 +2,8 @@
 	<string name="app_name">Sms Location Ping</string>
 	<string name="debug">Debug</string>
 	<string name="refresh_status">Refresh Status</string>
+	<string name="permission_granted">:-)</string>
+	<string name="permission_denied">:-(</string>
 	<string name="permissions">Permissions</string>
 	<string name="receive_sms">Receive SMS</string>
 	<string name="read_sms">Read SMS</string>
