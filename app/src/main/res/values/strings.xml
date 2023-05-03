@@ -1,8 +1,11 @@
 <resources>
 	<string name="app_name">Sms Location Ping</string>
 	<string name="debug">Debug</string>
-	<string name="button_bg_service_turn_on">Turn Background Service On</string>
-	<string name="button_bg_service_turn_off">Turn Background Service Off</string>
-	<string name="button_bg_service_get_status">Get Background Service Status</string>
-	<string name="testTextView">Testing test view</string>
+	<string name="refresh_status">Refresh Status</string>
+	<string name="permissions">Permissions</string>
+	<string name="receive_sms">Receive SMS</string>
+	<string name="read_sms">Read SMS</string>
+	<string name="send_sms">Send SMS</string>
+	<string name="access_coarse_location">Access Coarse Location</string>
+	<string name="access_fine_location">Access Fine Location</string>
 </resources>
