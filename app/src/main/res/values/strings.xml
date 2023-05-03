@@ -2,12 +2,15 @@
 	<string name="app_name">Sms Location Ping</string>
 	<string name="debug">Debug</string>
 	<string name="refresh_status">Refresh Status</string>
-	<string name="permission_granted">:-)</string>
-	<string name="permission_denied">:-(</string>
-	<string name="permissions">Permissions</string>
-	<string name="receive_sms">Receive SMS</string>
-	<string name="read_sms">Read SMS</string>
-	<string name="send_sms">Send SMS</string>
-	<string name="access_coarse_location">Access Coarse Location</string>
-	<string name="access_fine_location">Access Fine Location</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="able_to">Able to\.\.\.</string>
+	<string name="receive_sms">\.\.\.receive SMS?</string>
+	<string name="read_sms">\.\.\.read SMS?</string>
+	<string name="send_sms">\.\.\.send SMS?</string>
+	<string name="access_coarse_location">\.\.\.access Coarse Location?</string>
+	<string name="access_fine_location">\.\.\.access Fine Location?</string>
+	<string name="overall_status_unknown">Refresh the status please\.\.\.</string>
+	<string name="overall_status_bad">This won\'t work :(</string>
+	<string name="overall_status_good">Everything seems fine!</string>
 </resources>

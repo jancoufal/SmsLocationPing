@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import cz.iddqd.smslocationping.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-	private var REQUIRED_PERMISSIONS = listOf(
+	private val REQUIRED_PERMISSIONS = listOf(
 		Manifest.permission.RECEIVE_SMS,
 		Manifest.permission.READ_SMS,
 		Manifest.permission.SEND_SMS,
@@ -23,8 +23,10 @@ class MainActivity : AppCompatActivity() {
 	)
 
 	private lateinit var binding : ActivityMainBinding
-	private lateinit var textPermissionDenied : String
-	private lateinit var textPermissionGranted : String
+	private lateinit var textNo : String
+	private lateinit var textYes : String
+	private lateinit var textOverallBad : String
+	private lateinit var textOverallGood : String
 	private lateinit var permissionElements : List<PermissionUiPack>
 
 	data class PermissionUiPack(val permission: String, val uiBinding: TextView, val name: String)
@@ -36,8 +38,10 @@ class MainActivity : AppCompatActivity() {
 
 		Log.d(TAG, "onCreate")
 
-		textPermissionDenied = resources.getString(R.string.permission_denied)
-		textPermissionGranted = resources.getString(R.string.permission_granted)
+		textNo = resources.getString(R.string.no)
+		textYes = resources.getString(R.string.yes)
+		textOverallBad = resources.getString(R.string.overall_status_bad)
+		textOverallGood = resources.getString(R.string.overall_status_good)
 
 		with(binding) {
 			btnRefreshStatus.setOnClickListener(this@MainActivity::onRefreshStatusClick)
@@ -63,11 +67,13 @@ class MainActivity : AppCompatActivity() {
 	override fun onResume() {
 		super.onResume()
 		Log.d(TAG, "onResume")
+		refreshUi()
 	}
 
 	override fun onRestart() {
 		super.onRestart()
 		Log.d(TAG, "onRestart")
+		refreshUi()
 	}
 
 	override fun onDestroy() {
@@ -77,54 +83,41 @@ class MainActivity : AppCompatActivity() {
 
 	private fun onRefreshStatusClick(v: View?) {
 		Log.d(TAG, "onRefreshStatusClick($v)")
+
+		// ensure permissions
+		val permissionMap = REQUIRED_PERMISSIONS.associateWith { ContextCompat.checkSelfPermission(baseContext, it) }
+		if (permissionMap.values.any { it != PackageManager.PERMISSION_GRANTED })
+			ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS.toTypedArray(), 666)
+
+		refreshUi()
 	}
 
 	private fun onDebugClick(v: View?) {
-		ensurePermissions()
+		Log.d(TAG, "onDebugClick($v)")
+		refreshUi()
 	}
 
 	@SuppressLint("SetTextI18n")
 	private fun refreshUi() {
+		fun updateTextView(v: TextView, text: String, permissionGranted: Boolean) {
+			v.text = text
+			v.setTextColor(if(permissionGranted) Color.BLACK else Color.RED)
+		}
+
+		fun updatePermissionTextView(v: TextView, title: String, permissionGranted: Boolean) {
+			updateTextView(v, "$title ${if(permissionGranted) textYes else textNo}", permissionGranted)
+		}
+
+		Log.d(TAG, "refreshUi()")
+
+		var overallStatus = true
 		permissionElements.forEach {
 			val permissionGranted = ContextCompat.checkSelfPermission(baseContext, it.permission) == PackageManager.PERMISSION_GRANTED
-			with(it.uiBinding) {
-				text = "* ${it.name}? ${if(permissionGranted) textPermissionGranted else textPermissionDenied}"
-				setTextColor(if(permissionGranted) Color.GREEN else Color.RED)
-			}
+			overallStatus = overallStatus && permissionGranted
+			updatePermissionTextView(it.uiBinding, it.name, permissionGranted)
 		}
-	}
 
-	private fun ensurePermissions(): Boolean {
-		val requiredPermissions = listOf(
-			Manifest.permission.RECEIVE_SMS,
-			Manifest.permission.READ_SMS,
-			Manifest.permission.SEND_SMS,
-			Manifest.permission.ACCESS_COARSE_LOCATION,
-			Manifest.permission.ACCESS_FINE_LOCATION
-		)
-
-		if (missingAnyPermission(requiredPermissions))
-			askForPermissions(requiredPermissions)
-
-		return missingAnyPermission(requiredPermissions)
-	}
-
-	private fun missingAnyPermission(requiredPermissions: List<String>): Boolean {
-		Log.d(TAG, "permissionCheck")
-
-		val missingAnyPermission = requiredPermissions.stream()
-			.peek { Log.d(TAG, "permission $it") }
-			.map { ContextCompat.checkSelfPermission(baseContext, it) }
-			.peek { Log.d(TAG, "...$it (" + (if (it == PackageManager.PERMISSION_GRANTED) "ok" else "denied") + ")") }
-			.anyMatch { it != PackageManager.PERMISSION_GRANTED }
-
-		Log.d(TAG, "missingAnyPermission $missingAnyPermission")
-
-		return missingAnyPermission
-	}
-
-	private fun askForPermissions(requiredPermissions: List<String>) {
-		ActivityCompat.requestPermissions(this, requiredPermissions.toTypedArray(), 666)
+		updateTextView(binding.textOverallStatus, if(overallStatus) textOverallGood else textOverallBad, overallStatus)
 	}
 
 	companion object {

@@ -19,13 +19,13 @@
 		app:layout_constraintTop_toTopOf="parent" />
 
 	<com.google.android.material.textview.MaterialTextView
-		android:id="@+id/textPermissions"
+		android:id="@+id/textAbleTo"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginStart="16dp"
 		android:layout_marginTop="16dp"
 		android:layout_marginEnd="16dp"
-		android:text="@string/permissions"
+		android:text="@string/able_to"
 		android:textSize="24sp"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
@@ -36,23 +36,23 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginStart="16dp"
-		android:layout_marginTop="16dp"
+		android:layout_marginTop="4dp"
 		android:layout_marginEnd="16dp"
 		android:text="@string/receive_sms"
-		android:textSize="24sp"
+		android:textSize="16sp"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/textPermissions" />
+		app:layout_constraintTop_toBottomOf="@+id/textAbleTo" />
 
 	<com.google.android.material.textview.MaterialTextView
 		android:id="@+id/textReadSms"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginStart="16dp"
-		android:layout_marginTop="16dp"
+		android:layout_marginTop="4dp"
 		android:layout_marginEnd="16dp"
 		android:text="@string/read_sms"
-		android:textSize="24sp"
+		android:textSize="16sp"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/textReceiveSms" />
@@ -62,10 +62,10 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginStart="16dp"
-		android:layout_marginTop="16dp"
+		android:layout_marginTop="4dp"
 		android:layout_marginEnd="16dp"
 		android:text="@string/send_sms"
-		android:textSize="24sp"
+		android:textSize="16sp"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/textReadSms" />
@@ -75,10 +75,10 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginStart="16dp"
-		android:layout_marginTop="16dp"
+		android:layout_marginTop="4dp"
 		android:layout_marginEnd="16dp"
 		android:text="@string/access_coarse_location"
-		android:textSize="24sp"
+		android:textSize="16sp"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/textSendSms" />
@@ -88,13 +88,26 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginStart="16dp"
-		android:layout_marginTop="16dp"
+		android:layout_marginTop="4dp"
 		android:layout_marginEnd="16dp"
 		android:text="@string/access_fine_location"
-		android:textSize="24sp"
+		android:textSize="16sp"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/textAccessCoarseLocation" />
+
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/textOverallStatus"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="16dp"
+		android:layout_marginTop="16dp"
+		android:layout_marginEnd="16dp"
+		android:text="@string/overall_status_unknown"
+		android:textSize="24sp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/textAccessFineLocation" />
 
 	<com.google.android.material.button.MaterialButton
 		android:id="@+id/btnDebug"
