@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,7 +20,8 @@ class MainActivity : AppCompatActivity() {
 		Manifest.permission.READ_SMS,
 		Manifest.permission.SEND_SMS,
 		Manifest.permission.ACCESS_COARSE_LOCATION,
-		Manifest.permission.ACCESS_FINE_LOCATION
+		Manifest.permission.ACCESS_FINE_LOCATION,
+		Manifest.permission.ACCESS_BACKGROUND_LOCATION,
 	)
 
 	private lateinit var binding : ActivityMainBinding
@@ -53,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 				PermissionUiPack(Manifest.permission.SEND_SMS, binding.textSendSms, resources.getString(R.string.send_sms)),
 				PermissionUiPack(Manifest.permission.ACCESS_COARSE_LOCATION, binding.textAccessCoarseLocation, resources.getString(R.string.access_coarse_location)),
 				PermissionUiPack(Manifest.permission.ACCESS_FINE_LOCATION, binding.textAccessFineLocation, resources.getString(R.string.access_fine_location)),
+				PermissionUiPack(Manifest.permission.ACCESS_BACKGROUND_LOCATION, binding.textAccessBackgroundLocation, resources.getString(R.string.access_background_location)),
 			)
 		}
 
@@ -93,8 +96,7 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun onDebugClick(v: View?) {
-		Log.d(TAG, "onDebugClick($v)")
-		refreshUi()
+		Toast.makeText(this, ":P", Toast.LENGTH_LONG).show()
 	}
 
 	@SuppressLint("SetTextI18n")
