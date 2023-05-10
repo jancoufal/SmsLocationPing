@@ -1,8 +1,17 @@
 <resources>
 	<string name="app_name">Sms Location Ping</string>
 	<string name="debug">Debug</string>
-	<string name="button_bg_service_turn_on">Turn Background Service On</string>
-	<string name="button_bg_service_turn_off">Turn Background Service Off</string>
-	<string name="button_bg_service_get_status">Get Background Service Status</string>
-	<string name="testTextView">Testing test view</string>
+	<string name="refresh_status">Refresh Status</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="able_to">Able to\.\.\.</string>
+	<string name="receive_sms">\.\.\.receive SMS?</string>
+	<string name="read_sms">\.\.\.read SMS?</string>
+	<string name="send_sms">\.\.\.send SMS?</string>
+	<string name="access_coarse_location">\.\.\.access Coarse Location?</string>
+	<string name="access_fine_location">\.\.\.access Fine Location?</string>
+	<string name="access_background_location">\.\.\.access Background Location?</string>
+	<string name="overall_status_unknown">Refresh the status please\.\.\.</string>
+	<string name="overall_status_bad">This won\'t work :(</string>
+	<string name="overall_status_good">Everything seems fine!</string>
 </resources>
