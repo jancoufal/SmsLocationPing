@@ -62,6 +62,19 @@ class MainActivity : AppCompatActivity() {
 		refreshUi()
 	}
 
+	override fun onRequestPermissionsResult(
+		requestCode: Int,
+		permissions: Array<out String>,
+		grantResults: IntArray
+	) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+		when(requestCode)
+		{
+			666 -> {}
+		}
+	}
+
 	override fun onPause() {
 		super.onPause()
 		Log.d(TAG, "onPause")
@@ -103,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 	private fun refreshUi() {
 		fun updateTextView(v: TextView, text: String, permissionGranted: Boolean) {
 			v.text = text
-			v.setTextColor(if(permissionGranted) Color.BLACK else Color.RED)
+			v.setTextColor(if(permissionGranted) Color.LTGRAY else Color.RED)
 		}
 
 		fun updatePermissionTextView(v: TextView, title: String, permissionGranted: Boolean) {

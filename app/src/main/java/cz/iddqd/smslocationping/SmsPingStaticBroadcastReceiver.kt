@@ -20,8 +20,7 @@ import kotlinx.coroutines.launch
 class SmsPingStaticBroadcastReceiver : BroadcastReceiver() {
 
 	val ACCEPTED_NUMBERS = setOf(
-		"+420777666555",
-		"+420999888777",
+		"+420607546634",
 	)
 
 	val REQUEST_MESSAGE = "kdesi"
@@ -51,35 +50,48 @@ class SmsPingStaticBroadcastReceiver : BroadcastReceiver() {
 
 			GlobalScope.launch(Dispatchers.Default) {
 				smsInfo?.let {
-					if (ACCEPTED_NUMBERS.contains(it.senderNumber) && REQUEST_MESSAGE == smsInfo.message) {
 
-						Log.d(TAG, "context: $context")
+					if (ACCEPTED_NUMBERS.contains(it.senderNumber) && REQUEST_MESSAGE.equals(smsInfo.message, ignoreCase = true)) {
 
-						// get accurate location
-						val tokenSource = CancellationTokenSource()
-						val locSvc = LocationServices.getFusedLocationProviderClient(context)
-						val location = Tasks.await(
-							locSvc.getCurrentLocation(
-								LocationRequest.PRIORITY_HIGH_ACCURACY,
-								tokenSource.token
+						try {
+
+							Log.d(TAG, "context: $context")
+
+							// get accurate location
+							val tokenSource = CancellationTokenSource()
+							val locSvc = LocationServices.getFusedLocationProviderClient(context)
+							val location = Tasks.await(
+								locSvc.getCurrentLocation(
+									LocationRequest.PRIORITY_HIGH_ACCURACY,
+									tokenSource.token
+								)
 							)
-						)
 
-						Log.d(TAG, "location: $location")
+							Log.d(TAG, "location: $location")
 
-						// send response sms
-						val smsMessage = when(location) {
-							null -> "Unable to resolve location"
-							else -> RESPONSE_MESSAGE.format(location.accuracy, location.latitude, location.longitude)
+							// send response sms
+							val smsMessage = when (location) {
+								null -> "Unable to resolve location"
+								else -> RESPONSE_MESSAGE.format(
+									location.accuracy,
+									location.latitude,
+									location.longitude
+								)
+							}
+							val smsManager =
+								context.getSystemService(SmsManager::class.java) as SmsManager
+							smsManager.sendTextMessage(
+								smsInfo.senderNumber,
+								null,
+								smsMessage,
+								null,
+								null
+							)
 						}
-						val smsManager = context.getSystemService(SmsManager::class.java) as SmsManager
-						smsManager.sendTextMessage(
-							smsInfo.senderNumber,
-							null,
-							smsMessage,
-							null,
-							null
-						)
+						catch (e : Exception)
+						{
+							Toast.makeText(context, "SmsLocPing: ${e.javaClass.simpleName}: ${e.message}", Toast.LENGTH_LONG).show()
+						}
 					}
 				}
 			}
