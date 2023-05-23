@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 		Manifest.permission.ACCESS_FINE_LOCATION,
 		Manifest.permission.ACCESS_BACKGROUND_LOCATION,
 	)
+
+	private val PERMISSION_REQUEST_CODE = 1
 
 	private lateinit var binding : ActivityMainBinding
 	private lateinit var textNo : String
@@ -62,6 +65,21 @@ class MainActivity : AppCompatActivity() {
 		refreshUi()
 	}
 
+	override fun onRequestPermissionsResult(
+		requestCode: Int,
+		permissions: Array<out String>,
+		grantResults: IntArray
+	) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+		Log.d(TAG, "onRequestPermissionsResult(): requestCode = $requestCode, permissions = ${permissions.toList()}, grantResults = ${grantResults.toList()}")
+
+		when(requestCode)
+		{
+			PERMISSION_REQUEST_CODE -> refreshUi()
+		}
+	}
+
 	override fun onPause() {
 		super.onPause()
 		Log.d(TAG, "onPause")
@@ -88,11 +106,33 @@ class MainActivity : AppCompatActivity() {
 		Log.d(TAG, "onRefreshStatusClick($v)")
 
 		// ensure permissions
-		val permissionMap = REQUIRED_PERMISSIONS.associateWith { ContextCompat.checkSelfPermission(baseContext, it) }
-		if (permissionMap.values.any { it != PackageManager.PERMISSION_GRANTED })
-			ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS.toTypedArray(), 666)
+		REQUIRED_PERMISSIONS
+			.filter { ContextCompat.checkSelfPermission(baseContext, it) != PackageManager.PERMISSION_GRANTED }
+			.forEach { permission ->
+				run {
+					if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission))
+						showExplanation(permission)
+					else
+						requestPermission(permission)
+				}
+			}
 
 		refreshUi()
+	}
+
+	// See https://stackoverflow.com/questions/35484767/activitycompat-requestpermissions-not-showing-dialog-box
+	private fun showExplanation(permission: String) {
+		Log.d(TAG, "showExplanation(permission => $permission)")
+		AlertDialog.Builder(this).also {
+			it.setTitle(resources.getString(R.string.request_permission_title, permission))
+			it.setMessage(R.string.request_permission_message)
+			it.setPositiveButton(R.string.request_permission_ok) { _, _ -> requestPermission(permission)}
+		}.create().show()
+	}
+
+	private fun requestPermission(permission: String) {
+		Log.d(TAG, "requestPermission(permission => $permission)")
+		ActivityCompat.requestPermissions(this, arrayOf(permission), PERMISSION_REQUEST_CODE)
 	}
 
 	private fun onDebugClick(v: View?) {
@@ -103,7 +143,7 @@ class MainActivity : AppCompatActivity() {
 	private fun refreshUi() {
 		fun updateTextView(v: TextView, text: String, permissionGranted: Boolean) {
 			v.text = text
-			v.setTextColor(if(permissionGranted) Color.BLACK else Color.RED)
+			v.setTextColor(if(permissionGranted) Color.LTGRAY else Color.RED)
 		}
 
 		fun updatePermissionTextView(v: TextView, title: String, permissionGranted: Boolean) {

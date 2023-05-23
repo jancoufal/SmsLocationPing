@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.location.Location
 import android.provider.Telephony
 import android.telephony.SmsManager
 import android.util.Log
@@ -20,13 +21,15 @@ import kotlinx.coroutines.launch
 class SmsPingStaticBroadcastReceiver : BroadcastReceiver() {
 
 	val ACCEPTED_NUMBERS = setOf(
-		"+420777666555",
 		"+420999888777",
 	)
 
 	val REQUEST_MESSAGE = "kdesi"
 
 	val RESPONSE_MESSAGE = "Tady (presnost %.2fm): https://www.google.com/maps/search/?api=1&query=%f%%2C%f"
+
+	// how many times we ask system to provide a location whether it still returns null
+	val LOCATION_RETRIEVE_TRIES = 3
 
 	@SuppressLint("UnsafeProtectedBroadcastReceiver")
 	override fun onReceive(context: Context?, intent: Intent?) {
@@ -51,35 +54,49 @@ class SmsPingStaticBroadcastReceiver : BroadcastReceiver() {
 
 			GlobalScope.launch(Dispatchers.Default) {
 				smsInfo?.let {
-					if (ACCEPTED_NUMBERS.contains(it.senderNumber) && REQUEST_MESSAGE == smsInfo.message) {
 
-						Log.d(TAG, "context: $context")
+					if (ACCEPTED_NUMBERS.contains(it.senderNumber) && REQUEST_MESSAGE.equals(smsInfo.message, ignoreCase = true)) {
+						// when we initialize SMS manager first, we can use in a catch block send at least something
+						var smsManager : SmsManager? = null
+						try {
+							Log.d(TAG, "context: $context")
 
-						// get accurate location
-						val tokenSource = CancellationTokenSource()
-						val locSvc = LocationServices.getFusedLocationProviderClient(context)
-						val location = Tasks.await(
-							locSvc.getCurrentLocation(
-								LocationRequest.PRIORITY_HIGH_ACCURACY,
-								tokenSource.token
-							)
-						)
+							smsManager = context.getSystemService(SmsManager::class.java) as SmsManager
 
-						Log.d(TAG, "location: $location")
+							// get accurate location with retrying
+							var location : Location? = null
+							var tryCounter = LOCATION_RETRIEVE_TRIES
+							while (location == null && tryCounter-- > 0) {
+								val tokenSource = CancellationTokenSource()
+								val locSvc = LocationServices.getFusedLocationProviderClient(context)
+								location = Tasks.await(
+									locSvc.getCurrentLocation(
+										LocationRequest.PRIORITY_HIGH_ACCURACY,
+										tokenSource.token
+									)
+								)
+							}
 
-						// send response sms
-						val smsMessage = when(location) {
-							null -> "Unable to resolve location"
-							else -> RESPONSE_MESSAGE.format(location.accuracy, location.latitude, location.longitude)
+							Log.d(TAG, "location: $location")
+
+							// send response sms
+							val smsMessage = when (location) {
+								null -> "Unable to resolve location"
+								else -> RESPONSE_MESSAGE.format(location.accuracy, location.latitude, location.longitude)
+							}
+
+							smsManager.sendTextMessage(smsInfo.senderNumber, null, smsMessage, null, null)
 						}
-						val smsManager = context.getSystemService(SmsManager::class.java) as SmsManager
-						smsManager.sendTextMessage(
-							smsInfo.senderNumber,
-							null,
-							smsMessage,
-							null,
-							null
-						)
+						catch (e : Exception)
+						{
+							val errorMessage = "Error: ${e.javaClass.simpleName}: ${e.message}"
+
+							smsManager?.apply {
+								sendTextMessage(smsInfo.senderNumber, null, errorMessage, null, null)
+							}
+
+							Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+						}
 					}
 				}
 			}
