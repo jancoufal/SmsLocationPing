@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class SmsPingStaticBroadcastReceiver : BroadcastReceiver() {
 
 	val ACCEPTED_NUMBERS = setOf(
-		"+420607546634",
+		"+420999888777",
 	)
 
 	val REQUEST_MESSAGE = "kdesi"
