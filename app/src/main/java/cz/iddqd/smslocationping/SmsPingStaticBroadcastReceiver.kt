@@ -84,9 +84,6 @@ class SmsPingStaticBroadcastReceiver : BroadcastReceiver() {
 								)
 							}
 
-							location = null
-
-							// try to use location callback
 							if (location == null) {
 								var locationByCallback : Location? = null
 								val locationCallbackInvoked = CountDownLatch(1)
