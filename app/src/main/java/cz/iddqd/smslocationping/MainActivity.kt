@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity() {
 	private fun refreshUi() {
 		fun updateTextView(v: TextView, text: String, permissionGranted: Boolean) {
 			v.text = text
-			v.setTextColor(if(permissionGranted) Color.LTGRAY else Color.RED)
+			v.setTextColor(if(permissionGranted) Color.GREEN else Color.RED)
 		}
 
 		fun updatePermissionTextView(v: TextView, title: String, permissionGranted: Boolean) {
