@@ -67,7 +67,11 @@ class SmsPingStaticBroadcastReceiver : BroadcastReceiver() {
 						try {
 							Log.d(TAG, "context: $context")
 
-							smsManager = context.getSystemService(SmsManager::class.java) as SmsManager
+							smsManager = try {
+								context.getSystemService(SmsManager::class.java) as SmsManager
+							} catch (e : NullPointerException) {
+								SmsManager.getDefault()
+							}
 
 							val locationProvider = LocationServices.getFusedLocationProviderClient(context)
 
@@ -130,17 +134,23 @@ class SmsPingStaticBroadcastReceiver : BroadcastReceiver() {
 								else -> RESPONSE_MESSAGE.format(location.accuracy, location.latitude, location.longitude)
 							}
 
-							smsManager.sendTextMessage(smsInfo.senderNumber, null, smsMessage, null, null)
+							smsManager?.sendTextMessage(smsInfo.senderNumber, null, smsMessage, null, null)
 						}
 						catch (e : Exception)
 						{
-							val errorMessage = "Error: ${e.javaClass.simpleName}: ${e.message}"
+							try {
+								val errorMessage = "Error: ${e.javaClass.simpleName}: ${e.message}"
 
-							smsManager?.apply {
-								sendTextMessage(smsInfo.senderNumber, null, errorMessage, null, null)
+								Log.e(TAG, errorMessage)
+
+								smsManager?.sendTextMessage(smsInfo.senderNumber, null, errorMessage, null, null)
+
+								Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
 							}
-
-							Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+							catch (e : Exception)
+							{
+								Log.e(TAG, "Error!: ${e.javaClass.simpleName}: ${e.message}")
+							}
 						}
 					}
 				}
